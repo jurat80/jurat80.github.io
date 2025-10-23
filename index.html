@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quattro - Loyiha Boshqaruvi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg1: #071226;
+            --bg2: #2b2850;
+            --accent: #7c4dff;
+            --accent2: #9b5cff;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2));
+            color: #eaf6ff;
+            padding-left: 92px;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 92px;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(6px);
+            transition: width 0.25s;
+            overflow: hidden;
+            z-index: 30;
+        }
+
+        .sidebar:hover {
+            width: 260px;
+        }
+
+        .brand {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .nav-item {
+            margin-top: 12px;
+            padding: 8px;
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--accent2);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(124, 77, 255, 0.12), rgba(0, 194, 255, 0.08));
+            color: #fff;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 28px auto;
+            padding: 14px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .card-glass {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 30px rgba(2, 6, 23, 0.35);
+        }
+
+        h3 {
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .muted {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .thumb {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-accent {
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            color: #fff;
+            border: none;
+        }
+
+        .btn-accent:hover {
+            background: linear-gradient(90deg, var(--accent2), var(--accent));
+            color: #fff;
+        }
+
+        .file-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .file-item strong {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .file-info {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+        }
+
+        .small-muted {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        textarea.form-control {
+            height: 120px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 0 0.2rem rgba(124, 77, 255, 0.25);
+        }
+
+        table.table {
+            color: #eaf6ff;
+        }
+
+        table.table thead th {
+            background: linear-gradient(90deg, rgba(124, 77, 255, 0.12), rgba(0, 194, 255, 0.08));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: #fff;
+        }
+
+        table.table td {
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                padding-left: 16px;
+            }
+            .sidebar {
+                position: relative;
+                width: 100%;
+                display: flex;
+                gap: 12px;
+            }
+            .sidebar:hover {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">Q4</div>
+        <div class="nav-item active" data-target="akademik">📝 <span>Akademik yozuv</span></div>
+        <div class="nav-item" data-target="jamoa">👥 <span>Jamoa a'zolari</span></div>
+        <div class="nav-item" data-target="jamoviy">📁 <span>Jamoviy ishlar</span></div>
+        <div class="nav-item" data-target="shaxsiy">📂 <span>Shaxsiy ishlar</span></div>
+        <div class="nav-item" data-target="qayta">🔄 <span>Qayta topshirish</span></div>
+        <div class="nav-item" data-target="baholash">🧮 <span>Baholash</span></div>
+    </aside>
+
+    <main>
+        <!-- Akademik yozuv -->
+        <section id="akademik" class="card-glass">
+            <h3>📝 Akademik yozuv</h3>
+            <p class="muted">Quyida akademik yozuv haqida qisqacha ma'lumot va yo'riqnomalar joylashgan.</p>
+            <div class="mb-3">
+                <textarea class="form-control" placeholder="Akademik yozuv yoki eslatmalaringizni bu yerda yozishingiz mumkin..."></textarea>
+            </div>
+            <button class="btn btn-accent">Saqlash</button>
+        </section>
+
+        <!-- Jamoa a'zolari -->
+        <section id="jamoa" class="card-glass" style="display:none;">
+            <h3>👥 Jamoa a'zolari</h3>
+            <div class="row" id="teamCards"></div>
+            <div style="margin-top:12px">
+                <label class="small-muted">A'zo uchun rasm yuklash</label>
+                <input type="file" id="avatarInput" accept="image/*" class="form-control form-control-sm" />
+                <div id="avatarButtons" style="margin-top:8px"></div>
+            </div>
+        </section>
+
+        <!-- Jamoviy ishlar -->
+        <section id="jamoviy" class="card-glass" style="display:none;">
+            <h3>📁 Jamoviy ishlar</h3>
+            <p class="muted">Jamoviy ish fayllari (barcha jamoa uchun)</p>
+            <input type="file" id="teamFileInput" class="form-control form-control-sm mb-2" multiple />
+            <button class="btn btn-sm btn-accent mb-2" id="addTeamFiles">Jamoviy fayl(lar)ni qo'shish</button>
+            <div id="teamFilesList"></div>
+        </section>
+
+        <!-- Shaxsiy ishlar -->
+        <section id="shaxsiy" class="card-glass" style="display:none;">
+            <h3>📂 Shaxsiy ishlar</h3>
+            <div id="personalButtons" class="mb-3"></div>
+            <div id="personalCabinet" style="display:none;margin-top:12px"></div>
+        </section>
+
+        <!-- Qayta topshirish -->
+        <section id="qayta" class="card-glass" style="display:none;">
+            <h3>🔄 Qayta topshirish</h3>
+            <input type="file" id="resubmitInput" class="form-control form-control-sm mb-2" />
+            <button class="btn btn-sm btn-accent mb-2" id="resubmitBtn">Topshirish</button>
+            <ul id="resubmitList" style="list-style:none;padding-left:0;"></ul>
+        </section>
+
+        <!-- Baholash -->
+        <section id="baholash" class="card-glass" style="display:none;overflow:auto">
+            <h3>🧮 Baholash — Jurnal</h3>
+            <div style="margin-bottom:8px">
+                <button class="btn btn-sm btn-success" id="exportWord">Word (.doc) sifatida yuklab olish</button>
+                <span class="small-muted ms-3">Kiritilgan baholar avtomatik saqlanadi.</span>
+            </div>
+            <div id="journalArea"></div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Asosiy o'zgaruvchilar
+            const members = [
+                {id: 'm1', name: 'Yusufov Jaloladdin'},
+                {id: 'm2', name: "Sunnatov Jur'at"},
+                {id: 'm3', name: 'Toxirov Nodirbek'},
+                {id: 'm4', name: 'Raximov Ismandiyor'},
+                {id: 'm5', name: 'Azamat Sobirjonov'}
+            ];
+
+            let teamFiles = [];
+            let personalFiles = {};
+            let resubmissions = [];
+            const gradesKey = 'q4_grades_journal_v1';
+
+            // Navigatsiya funksiyasi
+            function showSection(id) {
+                document.querySelectorAll('main section').forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                const targetSection = document.getElementById(id);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                }
+                
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                    if (item.dataset.target === id) {
+                        item.classList.add('active');
+                    }
+                });
+                
+                window.location.hash = id;
+            }
+
+            // Menyu bosilganda
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    showSection(this.dataset.target);
+                });
+            });
+
+            // Hash bo'yicha bo'limni ko'rsatish
+            const hash = window.location.hash.replace('#', '');
+            const defaultSection = hash || 'akademik';
+            showSection(defaultSection);
+
+            // Jamoa a'zolarini ko'rsatish
+            function renderTeamCards() {
+                const container = document.getElementById('teamCards');
+                container.innerHTML = '';
+                
+                members.forEach(member => {
+                    const avatar = localStorage.getItem(`avatar_${member.id}`) || 
+                                 `https://via.placeholder.com/90x90/7c4dff/ffffff?text=${member.name.charAt(0)}`;
+                    
+                    const card = document.createElement('div');
+                    card.className = 'col-md-3 text-center mb-3';
+                    card.innerHTML = `
+                        <img class="thumb mb-2" src="${avatar}" alt="${member.name}" />
+                        <div style="font-weight: 700;">${member.name}</div>
+                    `;
+                    container.appendChild(card);
+                });
+                
+                // Avatar tanlash tugmalari
+                const avatarButtons = document.getElementById('avatarButtons');
+                avatarButtons.innerHTML = members.map(member => 
+                    `<button class="btn btn-sm btn-outline-light me-1 mb-1" data-avatar="${member.id}">${member.name}</button>`
+                ).join('');
+            }
+
+            // Avatar yuklash
+            document.getElementById('avatarButtons').addEventListener('click', function(e) {
+                if (e.target.hasAttribute('data-avatar')) {
+                    const memberId = e.target.getAttribute('data-avatar');
+                    const fileInput = document.getElementById('avatarInput');
+                    
+                    if (fileInput.files.length > 0) {
+                        const file = fileInput.files[0];
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(event) {
+                            localStorage.setItem(`avatar_${memberId}`, event.target.result);
+                            renderTeamCards();
+                            fileInput.value = '';
+                            alert('Avatar muvaffaqiyatli saqlandi!');
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert('Iltimos, avval rasm tanlang!');
+                    }
+                }
+            });
+
+            // Jamoviy fayllar
+            document.getElementById('addTeamFiles').addEventListener('click', function() {
+                const fileInput = document.getElementById('teamFileInput');
+                
+                if (fileInput.files.length > 0) {
+                    Array.from(fileInput.files).forEach(file => {
+                        const fileUrl = URL.createObjectURL(file);
+                        teamFiles.push({
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            url: fileUrl,
+                            timestamp: new Date().toLocaleString()
+                        });
+                    });
+                    
+                    renderTeamFiles();
+                    fileInput.value = '';
+                    alert('Jamoviy fayl(lar) muvaffaqiyatli qo\'shildi!');
+                } else {
+                    alert('Iltimos, avval fayl tanlang!');
+                }
+            });
+
+            function renderTeamFiles() {
+                const container = document.getElementById('teamFilesList');
+                container.innerHTML = '';
+                
+                if (teamFiles.length === 0) {
+                    container.innerHTML = '<div class="small-muted">Hozircha jamoviy fayl yo\'q.</div>';
+                    return;
+                }
+                
+                teamFiles.forEach((file, index) => {
+                    const fileElement = document.createElement('div');
+                    fileElement.className = 'file-item';
+                    fileElement.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>${file.name}</strong>
+                                <div class="file-info">
+                                    ${file.type} • ${Math.round(file.size / 1024)} KB • ${file.timestamp}
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-light me-2" data-open-team="${index}">Ochish</button>
+                                <button class="btn btn-sm btn-danger" data-del-team="${index}">O'chirish</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(fileElement);
+                });
+            }
+
+            // Jamoviy fayllarni boshqarish
+            document.getElementById('teamFilesList').addEventListener('click', function(e) {
+                if (e.target.hasAttribute('data-open-team')) {
+                    const index = parseInt(e.target.getAttribute('data-open-team'));
+                    window.open(teamFiles[index].url, '_blank');
+                }
+                
+                if (e.target.hasAttribute('data-del-team')) {
+                    const index = parseInt(e.target.getAttribute('data-del-team'));
+                    if (confirm('Haqiqatan ham bu faylni o\'chirmoqchimisiz?')) {
+                        URL.revokeObjectURL(teamFiles[index].url);
+                        teamFiles.splice(index, 1);
+                        renderTeamFiles();
+                    }
+                }
+            });
+
+            // Shaxsiy ishlar
+            function renderPersonalButtons() {
+                const container = document.getElementById('personalButtons');
+                container.innerHTML = members.map(member => 
+                    `<button class="btn btn-sm btn-outline-light me-2 mb-2" data-person="${member.id}">${member.name}</button>`
+                ).join('');
+            }
+
+            function openPersonalCabinet(memberId) {
+                const member = members.find(m => m.id === memberId);
+                const cabinet = document.getElementById('personalCabinet');
+                
+                cabinet.style.display = 'block';
+                cabinet.innerHTML = `
+                    <h5>${member.name} — Shaxsiy ishlar</h5>
+                    <div class="mb-2">
+                        <input type="file" id="uploadPersonal_${memberId}" class="form-control form-control-sm mb-2" multiple />
+                        <button class="btn btn-sm btn-accent" data-upload-person="${memberId}">Fayl(lar)ni yuklash</button>
+                    </div>
+                    <div id="personalList_${memberId}"></div>
+                `;
+                
+                personalFiles[member.name] = personalFiles[member.name] || [];
+                renderPersonalList(member.name);
+            }
+
+            document.getElementById('personalButtons').addEventListener('click', function(e) {
+                if (e.target.hasAttribute('data-person')) {
+                    openPersonalCabinet(e.target.getAttribute('data-person'));
+                }
+            });
+
+            // Shaxsiy fayllarni yuklash va boshqarish
+            document.addEventListener('click', function(e) {
+                if (e.target.hasAttribute('data-upload-person')) {
+                    const memberId = e.target.getAttribute('data-upload-person');
+                    const fileInput = document.getElementById(`uploadPersonal_${memberId}`);
+                    const member = members.find(m => m.id === memberId);
+                    
+                    if (fileInput.files.length > 0) {
+                        Array.from(fileInput.files).forEach(file => {
+                            const fileUrl = URL.createObjectURL(file);
+                            const fileEntry = {
+                                name: file.name,
+                                size: file.size,
+                                type: file.type,
+                                url: fileUrl,
+                                timestamp: new Date().toLocaleString()
+                            };
+                            
+                            personalFiles[member.name] = personalFiles[member.name] || [];
+                            personalFiles[member.name].push(fileEntry);
+                        });
+                        
+                        renderPersonalList(member.name);
+                        fileInput.value = '';
+                        alert('Shaxsiy fayl(lar) muvaffaqiyatli yuklandi!');
+                    }
+                }
+                
+                if (e.target.hasAttribute('data-del-person')) {
+                    const [memberName, index] = e.target.getAttribute('data-del-person').split('|');
+                    if (confirm('Haqiqatan ham bu faylni o\'chirmoqchimisiz?')) {
+                        URL.revokeObjectURL(personalFiles[memberName][index].url);
+                        personalFiles[memberName].splice(index, 1);
+                        renderPersonalList(memberName);
+                    }
+                }
+                
+                if (e.target.hasAttribute('data-open-person')) {
+                    const [memberName, index] = e.target.getAttribute('data-open-person').split('|');
+                    window.open(personalFiles[memberName][index].url, '_blank');
+                }
+            });
+
+            function renderPersonalList(memberName) {
+                const member = members.find(m => m.name === memberName);
+                const container = document.getElementById(`personalList_${member.id}`);
+                if (!container) return;
+                
+                container.innerHTML = '';
+                const files = personalFiles[memberName] || [];
+                
+                if (files.length === 0) {
+                    container.innerHTML = '<div class="small-muted">Hozircha shaxsiy fayl topilmadi.</div>';
+                    return;
+                }
+                
+                files.forEach((file, index) => {
+                    const fileElement = document.createElement('div');
+                    fileElement.className = 'file-item';
+                    fileElement.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>${file.name}</strong>
+                                <div class="file-info">
+                                    ${file.type} • ${Math.round(file.size / 1024)} KB • ${file.timestamp}
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-light me-2" data-open-person="${memberName}|${index}">Ochish</button>
+                                <button class="btn btn-sm btn-danger" data-del-person="${memberName}|${index}">O'chirish</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(fileElement);
+                });
+            }
+
+            // Qayta topshirish
+            document.getElementById('resubmitBtn').addEventListener('click', function() {
+                const fileInput = document.getElementById('resubmitInput');
+                
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    resubmissions.push({
+                        name: file.name,
+                        size: file.size,
+                        timestamp: new Date().toLocaleString()
+                    });
+                    
+                    renderResubmissions();
+                    fileInput.value = '';
+                    alert('Qayta topshirish muvaffaqiyatli qabul qilindi!');
+                } else {
+                    alert('Iltimos, avval fayl tanlang!');
+                }
+            });
+
+            function renderResubmissions() {
+                const container = document.getElementById('resubmitList');
+                container.innerHTML = '';
+                
+                resubmissions.forEach(submission => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'file-item';
+                    listItem.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>${submission.name}</strong>
+                                <div class="file-info">${submission.timestamp}</div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(listItem);
+                });
+            }
+
+            // Baholash jurnali
+            function loadGrades() {
+                try {
+                    return JSON.parse(localStorage.getItem(gradesKey)) || {};
+                } catch (e) {
+                    return {};
+                }
+            }
+
+            function saveGrades(grades) {
+                localStorage.setItem(gradesKey, JSON.stringify(grades));
+            }
+
+            function renderJournal() {
+                const grades = loadGrades();
+                const container = document.getElementById('journalArea');
+                
+                let html = `
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Ism</th>
+                                <th>Jamoviy ish</th>
+                                <th>Shaxsiy ish</th>
+                                <th>Sana / Vaqt</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                members.forEach(member => {
+                    const memberGrades = grades[member.name] || {};
+                    html += `
+                        <tr>
+                            <td style="min-width: 200px">${member.name}</td>
+                            <td>
+                                <input type="text" 
+                                       class="form-control form-control-sm grade-input" 
+                                       data-name="${member.name}" 
+                                       data-field="jamoviy"
+                                       value="${memberGrades.jamoviy || ''}">
+                            </td>
+                            <td>
+                                <input type="text" 
+                                       class="form-control form-control-sm grade-input" 
+                                       data-name="${member.name}" 
+                                       data-field="shaxsiy"
+                                       value="${memberGrades.shaxsiy || ''}">
+                            </td>
+                            <td class="small-muted" id="ts_${member.id}">
+                                ${memberGrades.timestamp || ''}
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                container.innerHTML = html;
+                
+                // Baholarni yangilash
+                document.querySelectorAll('.grade-input').forEach(input => {
+                    input.addEventListener('input', function() {
+                        const name = this.getAttribute('data-name');
+                        const field = this.getAttribute('data-field');
+                        const value = this.value.trim();
+                        
+                        const grades = loadGrades();
+                        grades[name] = grades[name] || {};
+                        grades[name][field] = value;
+                        grades[name].timestamp = new Date().toLocaleString();
+                        
+                        saveGrades(grades);
+                        document.getElementById(`ts_${members.find(m => m.name === name).id}`).textContent = grades[name].timestamp;
+                    });
+                });
+            }
+
+            // Word ga eksport qilish
+            document.getElementById('exportWord').addEventListener('click', function() {
+                const grades = loadGrades();
+                
+                let html = `
+                    <html>
+                    <head>
+                        <meta charset="utf-8">
+                        <title>Baholar Jurnali</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; }
+                            table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+                            th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+                            th { background-color: #f2f2f2; font-weight: bold; }
+                            h2 { color: #333; }
+                        </style>
+                    </head>
+                    <body>
+                        <h2>Baholar Jurnali</h2>
+                        <table>
+                            <tr>
+                                <th>Ism</th>
+                                <th>Jamoviy ish</th>
+                                <th>Shaxsiy ish</th>
+                                <th>Sana / Vaqt</th>
+                            </tr>
+                `;
+                
+                members.forEach(member => {
+                    const memberGrades = grades[member.name] || {};
+                    html += `
+                        <tr>
+                            <td>${member.name}</td>
+                            <td>${memberGrades.jamoviy || ''}</td>
+                            <td>${memberGrades.shaxsiy || ''}</td>
+                            <td>${memberGrades.timestamp || ''}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</table></body></html>';
+                
+                const blob = new Blob([html], { type: 'application/msword' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Baholar_Jurnali.doc';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+
+            // Dasturni ishga tushirish
+            renderTeamCards();
+            renderPersonalButtons();
+            renderJournal();
+        });
+    </script>
+</body>
+</html>
